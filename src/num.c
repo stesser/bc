@@ -370,12 +370,18 @@ static void bc_num_split(const BcNum *restrict n, size_t idx,
 		a->len = idx;
 		a->scale = a->rdx = b->scale = b->rdx = 0;
 
+		assert(a->cap >= a->len);
+		assert(b->cap >= b->len);
+
 		memcpy(b->num, n->num + idx, BC_NUM_SIZE(b->len));
 		memcpy(a->num, n->num, BC_NUM_SIZE(idx));
 
 		bc_num_clean(b);
 	}
-	else bc_num_copy(a, n);
+	else {
+		bc_num_copy(a, n);
+		bc_num_zero(b);
+	}
 
 	bc_num_clean(a);
 }

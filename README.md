@@ -104,6 +104,12 @@ other locations, use the `PREFIX` environment variable when running
 
 ### Package and Distro Maintainers
 
+#### Recommended Compiler
+
+When I ran benchmarks with my `bc` compiled under `clang`, it performed much
+better than when compiled under `gcc`. I recommend compiling this `bc` with
+`clang`.
+
 #### Recommended Optimizations
 
 I wrote this `bc` with Separation of Concerns, which means that there are many
@@ -177,6 +183,11 @@ it is as correct as I can make it.
 This `bc` can be used as a drop-in replacement for any existing `bc`. This `bc`
 is also compatible with MinGW toolchains, though history is not supported on
 Windows.
+
+In addition, this `bc` is considered complete; i.e., there will be no more
+releases with additional features. However, it *is* actively maintained, so if
+any bugs are found, they will be fixed in new releases. Also, additional
+translations will also be added as they are provided.
 
 ## Comparison to GNU `bc`
 

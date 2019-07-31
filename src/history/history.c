@@ -201,7 +201,7 @@ static bool bc_history_comboChar(uint32_t cp) {
 
 		// Combining chars are listed in ascending order, so once we pass
 		// the codepoint of interest, we know it's not a combining char.
-		if(bc_history_combo_chars[i] > cp) return false;
+		if (bc_history_combo_chars[i] > cp) return false;
 		if (bc_history_combo_chars[i] == cp) return true;
 	}
 
@@ -315,7 +315,7 @@ static size_t bc_history_prevLen(const char *buf, size_t pos, size_t *col_len) {
 		bc_history_codePoint(buf + pos, len, &cp);
 
 		if (!bc_history_comboChar(cp)) {
-			if (col_len != NULL) *col_len = bc_history_wchar(cp) ? 2 : 1;
+			if (col_len != NULL) *col_len = 1 + (bc_history_wchar(cp) != 0);
 			return end - pos;
 		}
 	}
@@ -997,8 +997,45 @@ static BcStatus bc_history_escape(BcHistory *h) {
 		}
 		// ESC O sequences.
 		else if (c == 'O') {
-			if (seq[1] == 'H') s = bc_history_edit_home(h);
-			else if (seq[1] == 'F') s = bc_history_edit_end(h);
+
+			switch (seq[1]) {
+
+				case 'A':
+				{
+					s = bc_history_edit_next(h, BC_HISTORY_PREV);
+					break;
+				}
+
+				case 'B':
+				{
+					s = bc_history_edit_next(h, BC_HISTORY_NEXT);
+					break;
+				}
+
+				case 'C':
+				{
+					s = bc_history_edit_right(h);
+					break;
+				}
+
+				case 'D':
+				{
+					s = bc_history_edit_left(h);
+					break;
+				}
+
+				case 'F':
+				{
+					s = bc_history_edit_end(h);
+					break;
+				}
+
+				case 'H':
+				{
+					s = bc_history_edit_home(h);
+					break;
+				}
+			}
 		}
 	}
 
